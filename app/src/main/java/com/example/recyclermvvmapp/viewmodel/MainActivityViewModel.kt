@@ -8,13 +8,11 @@ import com.example.recyclermvvmapp.models.RequestResponse
 import com.example.recyclermvvmapp.repositories.MainActivityRepository
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
-    private val mainActivityRepository: MainActivityRepository = MainActivityRepository()
+    private val mainActivityRepository: MainActivityRepository = MainActivityRepository(application)
     private var responseLiveData: LiveData<RequestResponse?>? = null
-    private var failureLiveData: LiveData<Throwable>? = null
 
     init {
         responseLiveData = mainActivityRepository.getResponseLiveData()
-        failureLiveData = mainActivityRepository.getFailedLiveData()
         mainActivityRepository.getItems()
     }
 
@@ -29,8 +27,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     /**
      * Returns failure Live Data
      */
-    fun getFailureData(): LiveData<Throwable>? {
-        return failureLiveData
+    fun getFailureData(): MutableLiveData<Throwable>? {
+        return mainActivityRepository.getFailedLiveData()
     }
 
     /**

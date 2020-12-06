@@ -1,9 +1,11 @@
 package com.example.recyclermvvmapp.repositories
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.recyclermvvmapp.models.RequestResponse
 import com.example.recyclermvvmapp.network.ApiService
+import com.example.recyclermvvmapp.network.NetworkConnectionInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -13,13 +15,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class MainActivityRepository {
+class MainActivityRepository(application: Application) {
 
     private val SERVICE_BASE_URL = "https://dl.dropboxusercontent.com/"
 
     private var apiService: ApiService? = null
     private var responseLiveData: MutableLiveData<RequestResponse>? = null
-    private var failureLiveData: MutableLiveData<Throwable>? = null
+    private var failureLiveData: MutableLiveData<Throwable> = MutableLiveData()
     private val isRefreshingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     private var title: MutableLiveData<String> = MutableLiveData()
 
@@ -28,7 +30,8 @@ class MainActivityRepository {
         responseLiveData = MutableLiveData<RequestResponse>()
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
-        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val client = OkHttpClient.Builder().addInterceptor(interceptor)
+            .addInterceptor(NetworkConnectionInterceptor(application)).build()
         apiService = Retrofit.Builder()
             .baseUrl(SERVICE_BASE_URL)
             .client(client)
@@ -63,7 +66,7 @@ class MainActivityRepository {
                     isRefreshingLiveData.value = false
 
                     responseLiveData?.postValue(null)
-                    failureLiveData?.postValue(t)
+                    failureLiveData.value = t
                 }
 
             })
@@ -73,7 +76,7 @@ class MainActivityRepository {
         return responseLiveData
     }
 
-    fun getFailedLiveData(): LiveData<Throwable>? {
+    fun getFailedLiveData(): MutableLiveData<Throwable> {
         return failureLiveData
     }
 
