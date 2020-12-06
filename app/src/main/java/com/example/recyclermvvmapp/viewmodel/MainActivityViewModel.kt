@@ -3,32 +3,21 @@ package com.example.recyclermvvmapp.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.recyclermvvmapp.models.RequestResponse
 import com.example.recyclermvvmapp.repositories.MainActivityRepository
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
-    private lateinit var mainActivityRepository: MainActivityRepository
+    private val mainActivityRepository: MainActivityRepository = MainActivityRepository()
     private var responseLiveData: LiveData<RequestResponse?>? = null
     private var failureLiveData: LiveData<Throwable>? = null
 
-    fun init() {
-        mainActivityRepository = MainActivityRepository()
+    init {
         responseLiveData = mainActivityRepository.getResponseLiveData()
         failureLiveData = mainActivityRepository.getFailedLiveData()
+        mainActivityRepository.getItems()
     }
 
-
-    /**
-     * To check if response already available or not
-     */
-    fun hasResponse(): Boolean {
-        responseLiveData?.let {
-            if (it.value != null && it.value!!.rows.isNotEmpty()) {
-                return true
-            }
-        }
-        return false
-    }
 
     /**
      * Returns Response Live Data
@@ -51,4 +40,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         mainActivityRepository.getItems()
     }
 
+    fun getIsRefreshing(): MutableLiveData<Boolean> {
+        return mainActivityRepository.getRefreshing()
+    }
+
+    fun getTitle(): MutableLiveData<String> {
+        return mainActivityRepository.getTitle()
+    }
 }

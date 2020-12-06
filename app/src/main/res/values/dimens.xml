@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="common_spacing">10dp</dimen>
+    <dimen name="hw_iv_preview">100dp</dimen>
+</resources>

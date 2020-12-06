@@ -20,8 +20,11 @@ class MainActivityRepository {
     private var apiService: ApiService? = null
     private var responseLiveData: MutableLiveData<RequestResponse>? = null
     private var failureLiveData: MutableLiveData<Throwable>? = null
+    private val isRefreshingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private var title: MutableLiveData<String> = MutableLiveData()
 
     init {
+        isRefreshingLiveData.value = false
         responseLiveData = MutableLiveData<RequestResponse>()
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -32,24 +35,33 @@ class MainActivityRepository {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
+        title.value = "Main Activity"
+
     }
 
     /**
      * Invoke Web Api and updates Live data for success and failure
      */
     fun getItems() {
+        isRefreshingLiveData.value = true
         apiService?.getItems()
             ?.enqueue(object : Callback<RequestResponse?> {
                 override fun onResponse(
                     call: Call<RequestResponse?>,
                     response: Response<RequestResponse?>
                 ) {
-                    if (response.body() != null) {
+                    isRefreshingLiveData.value = false
+                    val requestResponse = response.body()
+
+                    if (requestResponse != null) {
+                        title.value = requestResponse.title
                         responseLiveData?.postValue(response.body())
                     }
                 }
 
                 override fun onFailure(call: Call<RequestResponse?>, t: Throwable) {
+                    isRefreshingLiveData.value = false
+
                     responseLiveData?.postValue(null)
                     failureLiveData?.postValue(t)
                 }
@@ -63,5 +75,13 @@ class MainActivityRepository {
 
     fun getFailedLiveData(): LiveData<Throwable>? {
         return failureLiveData
+    }
+
+    fun getRefreshing(): MutableLiveData<Boolean> {
+        return isRefreshingLiveData
+    }
+
+    fun getTitle(): MutableLiveData<String> {
+        return title
     }
 }

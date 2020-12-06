@@ -12,8 +12,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.recyclermvvmapp.R
 import com.example.recyclermvvmapp.models.Row
 
-class ItemsAdapter() :
-    RecyclerView.Adapter<ItemsAdapter.MyViewHolder>() {
+class DetailsAdapter :
+    RecyclerView.Adapter<DetailsAdapter.MyViewHolder>() {
     private var results: List<Row> = ArrayList()
     fun setResults(list: List<Row>) {
         this.results = list
