@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.recyclermvvmapp.models.RequestResponse
 import com.example.recyclermvvmapp.repositories.MainActivityRepository
 
+/**
+ * View model to support all operations on Main Activity And Details Fragment
+ */
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
     private val mainActivityRepository: MainActivityRepository = MainActivityRepository(application)
     private var responseLiveData: LiveData<RequestResponse?>? = null
@@ -15,7 +18,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         responseLiveData = mainActivityRepository.getResponseLiveData()
         mainActivityRepository.getItems()
     }
-
 
     /**
      * Returns Response Live Data
@@ -38,10 +40,16 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         mainActivityRepository.getItems()
     }
 
+    /**
+     * Returns Refreshing status from repository
+     */
     fun getIsRefreshing(): MutableLiveData<Boolean> {
         return mainActivityRepository.getRefreshing()
     }
 
+    /**
+     * Returns Mutable live data of Title to observe on main Activity
+     */
     fun getTitle(): MutableLiveData<String> {
         return mainActivityRepository.getTitle()
     }

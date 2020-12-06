@@ -12,6 +12,11 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.recyclermvvmapp.R
 import com.example.recyclermvvmapp.models.Row
 
+
+/**
+ * Adapter to show all details in recycler.
+ * It showing Preview, Title, Description details
+ */
 class DetailsAdapter :
     RecyclerView.Adapter<DetailsAdapter.MyViewHolder>() {
     private var results: List<Row> = ArrayList()

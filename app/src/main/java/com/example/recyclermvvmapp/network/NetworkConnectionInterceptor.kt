@@ -6,6 +6,10 @@ import okhttp3.Request
 import okhttp3.Response
 import okio.IOException
 
+/**
+ * Interceptor Which will throw Custom Exception In No Internet Condition
+ * Uses Connection Detector class for checking internet.
+ */
 class NetworkConnectionInterceptor(context: Context) : Interceptor {
     private val mContext: Context = context
 
