@@ -13,6 +13,11 @@ import com.example.recyclermvvmapp.utility.EqualSpacingItemDecoration
 import com.example.recyclermvvmapp.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.fragment_list.view.*
 
+/**
+ * Details Fragment to show details of the place
+ * It will show list of details about place
+ * and will show error message if facing issue in getting response from web api.
+ */
 class DetailsFragment : Fragment() {
 
     private lateinit var viewModel: MainActivityViewModel
@@ -56,12 +61,18 @@ class DetailsFragment : Fragment() {
         })
     }
 
+    /**
+     * Hides RecyclerView and shows error text
+     */
     fun showError(errorString: String) {
         rootView.tvErrorMessage.text = errorString
         rootView.tvErrorMessage.visibility = View.VISIBLE
         rootView.recyclerItems.visibility = View.GONE
     }
 
+    /**
+     * Shows RecyclerView and hides error text
+     */
     fun showRecycler() {
         rootView.tvErrorMessage.visibility = View.GONE
         rootView.recyclerItems.visibility = View.VISIBLE
@@ -83,14 +94,4 @@ class DetailsFragment : Fragment() {
         return rootView
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment ListFragment.
-         */
-        @JvmStatic
-        fun newInstance() = DetailsFragment()
-    }
 }
