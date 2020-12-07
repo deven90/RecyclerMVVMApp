@@ -67,7 +67,7 @@ class DetailsFragment : Fragment() {
     fun showError(errorString: String) {
         rootView.tvErrorMessage.text = errorString
         rootView.tvErrorMessage.visibility = View.VISIBLE
-        rootView.recyclerItems.visibility = View.GONE
+        rootView.recyclerDetails.visibility = View.GONE
     }
 
     /**
@@ -75,7 +75,7 @@ class DetailsFragment : Fragment() {
      */
     fun showRecycler() {
         rootView.tvErrorMessage.visibility = View.GONE
-        rootView.recyclerItems.visibility = View.VISIBLE
+        rootView.recyclerDetails.visibility = View.VISIBLE
     }
 
     override fun onCreateView(
@@ -84,7 +84,7 @@ class DetailsFragment : Fragment() {
     ): View? {
         rootView = inflater.inflate(R.layout.fragment_list, container, false)
 
-        rootView.recyclerItems.apply {
+        rootView.recyclerDetails.apply {
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(EqualSpacingItemDecoration(16, EqualSpacingItemDecoration.VERTICAL))
             adapter = detailsAdapter

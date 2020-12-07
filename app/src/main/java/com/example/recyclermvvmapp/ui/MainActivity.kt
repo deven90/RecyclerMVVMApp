@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.recyclermvvmapp.R
 import com.example.recyclermvvmapp.viewmodel.MainActivityViewModel
 
-class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainActivityViewModel
 
@@ -19,5 +19,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.getTitle().observe(this, {
             supportActionBar?.title = it
         })
+    }
+
+    fun getName(): String {
+        return MainActivity::class.java.simpleName
     }
 }
